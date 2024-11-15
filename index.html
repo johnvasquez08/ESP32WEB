@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ESP32 Data</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    let chart; // Declarar el gráfico fuera para que sea accesible
+
+    async function fetchData() {
+      const response = await fetch('http://localhost:3000/data'); // Cambia localhost según tu servidor
+      const data = await response.json();
+
+      if (data.corriente_estimada && data.corriente_real) {
+        updateChart(data.corriente_estimada, data.corriente_real);
+      }
+    }
+
+    function updateChart(corrienteEstimada, corrienteReal) {
+        const now = 'tiempo'
+        chart.data.labels.push(now); // Añadir el tiempo actual como etiqueta
+        chart.data.datasets[0].data.push(corrienteEstimada); // Añadir el valor de corriente estimada
+        chart.data.datasets[1].data.push(corrienteReal); // Añadir el valor de corriente real
+
+        // Limitar la cantidad de puntos en el gráfico a 30
+        if (chart.data.labels.length > 5) {
+            chart.data.labels.shift();
+            chart.data.datasets[0].data.shift();
+            chart.data.datasets[1].data.shift();
+            chart.data.labels.push(now); // Añadir el tiempo actual como etiqueta
+            chart.data.datasets[0].data.push(corrienteEstimada); // Añadir el valor de corriente estimada
+            chart.data.datasets[1].data.push(corrienteReal);
+            
+
+        }
+
+        chart.update(); // Actualizar el gráfico
+        }
+
+    function initializeChart() {
+      const ctx = document.getElementById('myChart').getContext('2d');
+      chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: [], // Etiquetas (tiempo)
+          datasets: [
+          {
+          label: 'Corriente Estimada (mA)',
+          data: [],
+          borderColor: '#ffffff', // Cambiar a color blanco
+          backgroundColor: 'rgba(255, 255, 255, 0.2)', // Cambiar a blanco semitransparente
+          borderWidth: 2,
+          fill: true,
+        },
+        {
+          label: 'Corriente Real (mA)',
+          data: [],
+          borderColor: '#87CEEB', // Cambiar a un azul claro
+          backgroundColor: 'rgba(135, 206, 235, 0.2)', // Cambiar a azul claro semitransparente
+          borderWidth: 2,
+          fill: true,
+        },
+          ],
+        },
+        options: {
+    responsive: true,
+    scales: {
+        x: {
+            title: {
+                display: true,
+                text: 'Tiempo',
+                color: '#ffffff', // Título del eje X en blanco
+            },
+            ticks: {
+                color: '#ffffff', // Color de las etiquetas del eje X
+            }
+        },
+        y: {
+            beginAtZero: true,
+            title: {
+                display: true,
+                text: 'Corriente (mA)',
+                color: '#ffffff' // Título del eje Y en blanco
+            },
+            ticks: {
+                color: '#ffffff', // Color de las etiquetas del eje Y
+            }
+        },
+    },
+    plugins: {
+        legend: {
+            labels: {
+                color: '#ffffff' // Color de las etiquetas de la leyenda a blanco
+            }
+        }
+    }
+},});
+    }
+
+    window.onload = function () {
+      initializeChart(); // Crear el gráfico al cargar la página
+      setInterval(fetchData, 1000); // Obtener datos cada segundo
+    };
+  </script>
+</head>
+<body>
+    <div>
+        <h2>Presentado por John Vasquez, Juan Sarria, Isaac Barros</h2>
+        <h1>Datos de la ESP32</h1>
+    </div>
+    
+  <canvas id="myChart" width="1200"></canvas> <!-- Contenedor del gráfico -->
+</body>
+</html>

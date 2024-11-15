@@ -1,0 +1,45 @@
+html {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-image: url('https://altertecnia.com/wp-content/uploads/ingenieria-de-planta.jpg');
+    background-size: cover;    
+}
+h1  {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: rgb(230, 231, 232);
+  }
+
+h2 {
+    color: white;
+}
+  
+  /* Canvas Styles */
+  canvas {
+    background-color: rgba(0, 0, 0, 0.256);
+    border: 1px solid #555;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    margin: 2rem auto;
+    display: block;
+    color: #fff;
+    backdrop-filter: blur(3px);
+  }
+  .chart-title, .chart-axis-title {
+    color: #ffffff; /* Cambiar el color del título y ejes a blanco */
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 2rem;
+    }
+  
+    canvas {
+      width: 100%;
+      height: auto;
+      color: #fff;
+    }
+  }
