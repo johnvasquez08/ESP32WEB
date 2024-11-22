@@ -12,7 +12,7 @@
 
 
     async function fetchData() {
-      const response = await fetch('http://localhost:3000/data'); // Cambia localhost según tu servidor
+      const response = await fetch('https://esp32web.onrender.com/data'); // Cambia localhost según tu servidor
       const data = await response.json();
 
       if (data.corriente_estimada && data.corriente_real && data.voltage) {
